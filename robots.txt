@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bambere.com.br/sitemap.xml
