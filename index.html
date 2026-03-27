@@ -931,18 +931,94 @@
 
         .carousel-slide img {
             width: 100%;
-            height: 280px;
-            object-fit: cover;
+            height: auto;
+            object-fit: contain;
             border-radius: 16px;
             display: block;
             box-shadow: 0 4px 16px rgba(0,0,0,0.1);
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
+        .carousel-slide img {
+            cursor: zoom-in;
+        }
+
         .carousel-slide img:hover {
             transform: scale(1.03);
             box-shadow: 0 10px 28px rgba(0,0,0,0.16);
         }
+
+        /* ── LIGHTBOX ── */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: rgba(0,0,0,0.92);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .lightbox.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .lightbox img {
+            max-width: 92vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            transition: transform 0.3s;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255,255,255,0.28);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .lightbox-nav:hover { background: rgba(255,255,255,0.28); }
+        .lightbox-nav.lb-prev { left: 1.25rem; }
+        .lightbox-nav.lb-next { right: 1.25rem; }
 
         .carousel-controls {
             display: flex;
@@ -1081,7 +1157,7 @@
             .hero-logo { width: 185px; }
 
             .carousel-slide { min-width: 50%; }
-            .carousel-slide img { height: 220px; }
+            .carousel-slide img { height: auto; }
 
             .balloon.b3,
             .balloon.b6,
@@ -1097,7 +1173,7 @@
             .prod-img { height: 160px; }
             .contato-cta-box { padding: 2rem 1.5rem; }
             .carousel-slide { min-width: 100%; }
-            .carousel-slide img { height: 240px; }
+            .carousel-slide img { height: auto; }
             .carousel-dots { max-width: 160px; }
         }
 
@@ -1478,6 +1554,14 @@
         </div>
     </footer>
 
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Visualizar imagem">
+        <button class="lightbox-close" id="lbClose" aria-label="Fechar"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        <button class="lightbox-nav lb-prev" id="lbPrev" aria-label="Imagem anterior"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+        <img id="lbImg" src="" alt="Produto Bamberê ampliado">
+        <button class="lightbox-nav lb-next" id="lbNext" aria-label="Próxima imagem"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+    </div>
+
     <!-- WHATSAPP FLUTUANTE -->
     <a href="https://wa.me/5594991196942"
        class="whatsapp-float"
@@ -1578,6 +1662,45 @@
 
             window.addEventListener('resize', init);
             init();
+        })();
+
+        // ── Lightbox ──
+        (function () {
+            const lb      = document.getElementById('lightbox');
+            const lbImg   = document.getElementById('lbImg');
+            const lbClose = document.getElementById('lbClose');
+            const lbPrev  = document.getElementById('lbPrev');
+            const lbNext  = document.getElementById('lbNext');
+            const images  = Array.from(document.querySelectorAll('.carousel-slide img'));
+            let lbIndex   = 0;
+
+            function open(index) {
+                lbIndex = index;
+                lbImg.src = images[lbIndex].src;
+                lbImg.alt = images[lbIndex].alt;
+                lb.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function close() {
+                lb.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            function prev() { lbIndex = (lbIndex - 1 + images.length) % images.length; lbImg.src = images[lbIndex].src; lbImg.alt = images[lbIndex].alt; }
+            function next() { lbIndex = (lbIndex + 1) % images.length; lbImg.src = images[lbIndex].src; lbImg.alt = images[lbIndex].alt; }
+
+            images.forEach((img, i) => img.addEventListener('click', () => open(i)));
+            lbClose.addEventListener('click', close);
+            lbPrev.addEventListener('click', prev);
+            lbNext.addEventListener('click', next);
+            lb.addEventListener('click', e => { if (e.target === lb) close(); });
+            document.addEventListener('keydown', e => {
+                if (!lb.classList.contains('open')) return;
+                if (e.key === 'Escape') close();
+                if (e.key === 'ArrowLeft') prev();
+                if (e.key === 'ArrowRight') next();
+            });
         })();
 
         // ── Menu toggle ──
