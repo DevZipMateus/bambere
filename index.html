@@ -294,13 +294,14 @@
             font-family: 'Baloo 2', cursive;
             font-size: clamp(2.8rem, 7vw, 4.5rem);
             font-weight: 800;
-            background: linear-gradient(90deg, var(--red), var(--primary), var(--yellow), var(--accent), var(--blue), var(--secondary));
+            background: linear-gradient(90deg, var(--red), var(--primary), var(--yellow), var(--accent), var(--blue), var(--secondary), var(--red));
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             line-height: 1.1;
             margin-bottom: 0.75rem;
-            animation: fadeUp 0.8s 0.25s ease-out both;
+            animation: fadeUp 0.8s 0.25s ease-out both, gradientShift 5s 1.1s linear infinite;
         }
 
         .hero h2 {
@@ -350,6 +351,8 @@
             transition: all 0.25s;
             cursor: pointer;
             white-space: nowrap;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-primary {
@@ -1116,6 +1119,169 @@
         }
 
         /* ─────────────────────────────────────────
+           EFEITOS VISUAIS
+        ───────────────────────────────────────── */
+
+        /* Gradiente animado H1 */
+        @keyframes gradientShift {
+            0%   { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        /* Logo flutuante */
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-12px); }
+        }
+
+        .hero-logo.floating {
+            animation: logoFloat 3.5s ease-in-out infinite !important;
+        }
+
+        /* Partículas no hero */
+        .hero-particle {
+            position: absolute;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            animation: particleFloat linear infinite;
+            user-select: none;
+            font-style: normal;
+        }
+
+        @keyframes particleFloat {
+            0%   { opacity: 0;   transform: translateY(0)     rotate(0deg)   scale(0.3); }
+            12%  { opacity: 0.75; }
+            88%  { opacity: 0.75; }
+            100% { opacity: 0;   transform: translateY(-90px) rotate(360deg) scale(0.1); }
+        }
+
+        /* Ripple nos botões */
+        .ripple-wave {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.38);
+            transform: scale(0);
+            animation: rippleAnim 0.65s linear forwards;
+            pointer-events: none;
+        }
+
+        @keyframes rippleAnim {
+            to { transform: scale(4); opacity: 0; }
+        }
+
+        /* WhatsApp pulse */
+        .whatsapp-float {
+            overflow: visible;
+        }
+
+        .whatsapp-float::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: #25D366;
+            animation: waPulse 2.4s ease-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes waPulse {
+            0%   { transform: scale(1);   opacity: 0.65; }
+            100% { transform: scale(2.1); opacity: 0; }
+        }
+
+        /* Section tag bounce */
+        @keyframes tagBounce {
+            0%   { transform: scale(0) translateY(10px); opacity: 0; }
+            60%  { transform: scale(1.14) translateY(-2px); opacity: 1; }
+            80%  { transform: scale(0.95); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .section-tag.bounced {
+            animation: tagBounce 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+
+        /* Reveal variantes */
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-52px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(52px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.82);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal-left.visible,
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-scale.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Shine nos cards */
+        .mvv-card,
+        .produto-card {
+            overflow: hidden;
+        }
+
+        .mvv-card::after,
+        .produto-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -65%;
+            width: 38%;
+            height: 200%;
+            background: linear-gradient(to right,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0.28),
+                rgba(255,255,255,0));
+            transform: skewX(-20deg);
+            transition: left 0.55s ease;
+            pointer-events: none;
+        }
+
+        .mvv-card:hover::after,
+        .produto-card:hover::after {
+            left: 130%;
+        }
+
+        /* Tilt 3D nos cards */
+        .mvv-card,
+        .produto-card {
+            transform-style: preserve-3d;
+        }
+
+        /* Sparkle */
+        .sparkle {
+            position: absolute;
+            pointer-events: none;
+            z-index: 10;
+            animation: sparkleAnim 0.9s ease-out forwards;
+            font-style: normal;
+        }
+
+        @keyframes sparkleAnim {
+            0%   { opacity: 1; transform: scale(0) rotate(0deg) translateY(0); }
+            50%  { opacity: 1; transform: scale(1.3) rotate(180deg) translateY(-12px); }
+            100% { opacity: 0; transform: scale(0) rotate(360deg) translateY(-28px); }
+        }
+
+        /* ─────────────────────────────────────────
            RESPONSIVIDADE
         ───────────────────────────────────────── */
 
@@ -1751,13 +1917,137 @@
             });
         });
 
-        // ── Scroll reveal ──
-        const reveals  = document.querySelectorAll('.reveal');
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        // ── Scroll reveal com stagger ──
+        const allReveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+        const revealObs  = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const el       = entry.target;
+                const siblings = [...el.parentElement.children].filter(c =>
+                    c.classList.contains('reveal') || c.classList.contains('reveal-left') ||
+                    c.classList.contains('reveal-right') || c.classList.contains('reveal-scale'));
+                const idx = siblings.indexOf(el);
+                el.style.transitionDelay = (idx * 0.13) + 's';
+                el.classList.add('visible');
+                revealObs.unobserve(el);
+            });
         }, { threshold: 0.12 });
 
-        reveals.forEach(el => observer.observe(el));
+        allReveals.forEach(el => revealObs.observe(el));
+
+        // ── Section tag bounce ──
+        const tagObs = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('bounced');
+                    tagObs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.6 });
+        document.querySelectorAll('.section-tag').forEach(t => tagObs.observe(t));
+
+        // ── Partículas no hero ──
+        (function spawnParticles() {
+            const hero   = document.querySelector('.hero');
+            const colors = ['#F47B20','#7B2D8B','#43A047','#E53935','#1976D2','#FDD835'];
+            const shapes = ['★','♥','✦','◆','●','▲'];
+            for (let i = 0; i < 22; i++) {
+                const p = document.createElement('span');
+                p.className = 'hero-particle';
+                p.textContent = shapes[i % shapes.length];
+                p.style.cssText =
+                    'left:'  + (4 + Math.random() * 92) + '%;' +
+                    'top:'   + (8 + Math.random() * 84) + '%;' +
+                    'color:' + colors[Math.floor(Math.random() * colors.length)] + ';' +
+                    'font-size:' + (8 + Math.random() * 10) + 'px;' +
+                    'animation-delay:'    + (Math.random() * 7)     + 's;' +
+                    'animation-duration:' + (5 + Math.random() * 5) + 's;';
+                hero.appendChild(p);
+            }
+        })();
+
+        // ── Logo flutuante após heroPop ──
+        (function () {
+            const logo = document.querySelector('.hero-logo');
+            logo.addEventListener('animationend', function handler(e) {
+                if (e.animationName === 'heroPop') {
+                    logo.classList.add('floating');
+                    logo.removeEventListener('animationend', handler);
+                }
+            });
+        })();
+
+        // ── Ripple nos botões ──
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const wave = document.createElement('span');
+                wave.className = 'ripple-wave';
+                wave.style.cssText =
+                    'width:'  + size + 'px;' +
+                    'height:' + size + 'px;' +
+                    'left:'   + (e.clientX - rect.left  - size / 2) + 'px;' +
+                    'top:'    + (e.clientY - rect.top   - size / 2) + 'px;';
+                this.appendChild(wave);
+                setTimeout(() => wave.remove(), 650);
+            });
+        });
+
+        // ── Mouse parallax nos balões ──
+        (function () {
+            const balloons = document.querySelectorAll('.balloon');
+            let ticking = false;
+            document.addEventListener('mousemove', e => {
+                if (ticking) return;
+                ticking = true;
+                requestAnimationFrame(() => {
+                    const dx = (e.clientX / window.innerWidth  - 0.5);
+                    const dy = (e.clientY / window.innerHeight - 0.5);
+                    balloons.forEach((b, i) => {
+                        const f = (i % 3 + 1) * 7;
+                        b.style.transform = 'translateX(' + (dx * f) + 'px) translateY(' + (dy * f) + 'px)';
+                    });
+                    ticking = false;
+                });
+            }, { passive: true });
+        })();
+
+        // ── Tilt 3D nos cards ──
+        document.querySelectorAll('.mvv-card, .produto-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const r = card.getBoundingClientRect();
+                const x = (e.clientX - r.left) / r.width  - 0.5;
+                const y = (e.clientY - r.top)  / r.height - 0.5;
+                card.style.transform =
+                    'perspective(900px) rotateY(' + (x * 9) + 'deg) rotateX(' + (-y * 9) + 'deg) translateY(-6px)';
+            });
+            card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+        });
+
+        // ── Sparkle ao clicar na logo ──
+        (function () {
+            const logo   = document.querySelector('.hero-logo');
+            const colors = ['#F47B20','#7B2D8B','#FDD835','#E53935','#43A047','#1976D2'];
+            const shapes = ['★','✦','♥','◆'];
+            logo.addEventListener('click', () => {
+                const rect = logo.getBoundingClientRect();
+                for (let i = 0; i < 8; i++) {
+                    const sp = document.createElement('span');
+                    sp.className = 'sparkle';
+                    sp.textContent = shapes[i % shapes.length];
+                    sp.style.cssText =
+                        'left:'      + (rect.left + Math.random() * rect.width)  + 'px;' +
+                        'top:'       + (rect.top  + Math.random() * rect.height) + 'px;' +
+                        'color:'     + colors[Math.floor(Math.random() * colors.length)] + ';' +
+                        'font-size:' + (12 + Math.random() * 10) + 'px;' +
+                        'position:fixed;' +
+                        'animation-delay:' + (i * 0.07) + 's;';
+                    document.body.appendChild(sp);
+                    setTimeout(() => sp.remove(), 900 + i * 70);
+                }
+            });
+        })();
 
         // ── Nav link ativo ao scroll ──
         const sections = document.querySelectorAll('section[id]');
