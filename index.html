@@ -902,6 +902,122 @@
         }
 
         /* ─────────────────────────────────────────
+           GALERIA — CARROSSEL
+        ───────────────────────────────────────── */
+        .galeria {
+            background: linear-gradient(150deg, #F8F0FF 0%, #FFF8F0 50%, #F0FFF4 100%);
+        }
+
+        .carousel-wrap {
+            position: relative;
+        }
+
+        .carousel-viewport {
+            overflow: hidden;
+            border-radius: 20px;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+        }
+
+        .carousel-slide {
+            min-width: 25%;
+            padding: 0 0.6rem;
+            flex-shrink: 0;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 16px;
+            display: block;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .carousel-slide img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.16);
+        }
+
+        .carousel-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .carousel-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+            flex-shrink: 0;
+        }
+
+        .carousel-btn.prev {
+            background: white;
+            color: var(--secondary);
+            box-shadow: 0 2px 12px rgba(123,45,139,0.15);
+        }
+
+        .carousel-btn.prev:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateX(-2px);
+            box-shadow: 0 6px 20px rgba(123,45,139,0.35);
+        }
+
+        .carousel-btn.next {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 12px rgba(244,123,32,0.3);
+        }
+
+        .carousel-btn.next:hover {
+            background: var(--primary-dark);
+            transform: translateX(2px);
+            box-shadow: 0 6px 20px rgba(244,123,32,0.45);
+        }
+
+        .carousel-dots {
+            display: flex;
+            gap: 0.4rem;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 240px;
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(123,45,139,0.2);
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: background 0.3s, transform 0.3s;
+            flex-shrink: 0;
+        }
+
+        .carousel-dot.active {
+            background: var(--primary);
+            transform: scale(1.4);
+        }
+
+        /* ─────────────────────────────────────────
            RESPONSIVIDADE
         ───────────────────────────────────────── */
 
@@ -913,6 +1029,7 @@
         /* 1200px–1439px */
         @media (max-width: 1199px) {
             .produtos-grid { grid-template-columns: repeat(3, 1fr); }
+            .carousel-slide { min-width: 33.333%; }
         }
 
         /* 1024px–1199px */
@@ -963,6 +1080,9 @@
 
             .hero-logo { width: 185px; }
 
+            .carousel-slide { min-width: 50%; }
+            .carousel-slide img { height: 220px; }
+
             .balloon.b3,
             .balloon.b6,
             .balloon.b7,
@@ -976,6 +1096,9 @@
             .hero-logo { width: 165px; }
             .prod-img { height: 160px; }
             .contato-cta-box { padding: 2rem 1.5rem; }
+            .carousel-slide { min-width: 100%; }
+            .carousel-slide img { height: 240px; }
+            .carousel-dots { max-width: 160px; }
         }
 
         /* 360px–479px */
@@ -1006,6 +1129,7 @@
                 <li><a href="#inicio" class="active">Início</a></li>
                 <li><a href="#sobre">Sobre nós</a></li>
                 <li><a href="#produtos">Produtos</a></li>
+                <li><a href="#galeria">Galeria</a></li>
                 <li><a href="#atendimento">Horários</a></li>
                 <li><a href="#contato" class="nav-cta">Fale conosco</a></li>
             </ul>
@@ -1021,6 +1145,7 @@
             <li><a href="#inicio">Início</a></li>
             <li><a href="#sobre">Sobre nós</a></li>
             <li><a href="#produtos">Produtos</a></li>
+            <li><a href="#galeria">Galeria</a></li>
             <li><a href="#atendimento">Horários</a></li>
             <li><a href="#contato">Contato</a></li>
         </ul>
@@ -1183,6 +1308,65 @@
     </section>
 
     <!-- ══════════════════════════════════════
+         GALERIA
+    ══════════════════════════════════════ -->
+    <section id="galeria" class="galeria" aria-label="Galeria de produtos">
+        <div class="container">
+            <span class="section-tag">Galeria</span>
+            <h2 class="section-title">Conheça nossa coleção</h2>
+            <p class="section-subtitle">Cada peça selecionada com carinho para encantar sua família.</p>
+            <div class="carousel-wrap">
+                <div class="carousel-viewport">
+                    <div class="carousel-track" id="carouselTrack">
+                        <div class="carousel-slide"><img src="images/midia_1.jpg"  alt="Produto Bamberê 1"  loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_2.jpg"  alt="Produto Bamberê 2"  loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_3.jpg"  alt="Produto Bamberê 3"  loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_4.jpg"  alt="Produto Bamberê 4"  loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_5.jpg"  alt="Produto Bamberê 5"  loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_6.jpg"  alt="Produto Bamberê 6"  loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_7.jpg"  alt="Produto Bamberê 7"  loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_8.jpg"  alt="Produto Bamberê 8"  loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_9.jpg"  alt="Produto Bamberê 9"  loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_10.jpg" alt="Produto Bamberê 10" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_11.jpg" alt="Produto Bamberê 11" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_12.jpg" alt="Produto Bamberê 12" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_13.jpg" alt="Produto Bamberê 13" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_14.jpg" alt="Produto Bamberê 14" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_15.jpg" alt="Produto Bamberê 15" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_16.jpg" alt="Produto Bamberê 16" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_17.jpg" alt="Produto Bamberê 17" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_18.jpg" alt="Produto Bamberê 18" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_19.jpg" alt="Produto Bamberê 19" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_20.jpg" alt="Produto Bamberê 20" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_21.jpg" alt="Produto Bamberê 21" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_22.jpg" alt="Produto Bamberê 22" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_23.jpg" alt="Produto Bamberê 23" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_24.jpg" alt="Produto Bamberê 24" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_25.jpg" alt="Produto Bamberê 25" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_26.jpg" alt="Produto Bamberê 26" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_27.jpg" alt="Produto Bamberê 27" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_28.jpg" alt="Produto Bamberê 28" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_29.jpg" alt="Produto Bamberê 29" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_30.jpg" alt="Produto Bamberê 30" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_31.jpg" alt="Produto Bamberê 31" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_32.jpg" alt="Produto Bamberê 32" loading="lazy"></div>
+                        <div class="carousel-slide"><img src="images/midia_33.jpg" alt="Produto Bamberê 33" loading="lazy"></div>
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev" id="carouselPrev" aria-label="Imagem anterior">
+                        <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                    </button>
+                    <div class="carousel-dots" id="carouselDots" role="tablist" aria-label="Navegação do carrossel"></div>
+                    <button class="carousel-btn next" id="carouselNext" aria-label="Próxima imagem">
+                        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
          ATENDIMENTO
     ══════════════════════════════════════ -->
     <section id="atendimento" class="atendimento" aria-label="Horários de atendimento">
@@ -1308,6 +1492,94 @@
     <script src="https://vaabpicspdbolvutnscp.supabase.co/functions/v1/get-footer-iframe"></script>
 
     <script>
+        // ── Carrossel ──
+        (function () {
+            const track    = document.getElementById('carouselTrack');
+            const slides   = Array.from(track.children);
+            const prevBtn  = document.getElementById('carouselPrev');
+            const nextBtn  = document.getElementById('carouselNext');
+            const dotsWrap = document.getElementById('carouselDots');
+            const total    = slides.length;
+            let current    = 0;
+            let timer;
+
+            function visible() {
+                const w = window.innerWidth;
+                if (w >= 1200) return 4;
+                if (w >= 1024) return 3;
+                if (w >= 480)  return 2;
+                return 1;
+            }
+
+            function buildDots() {
+                dotsWrap.innerHTML = '';
+                const pages = Math.ceil(total / visible());
+                for (let i = 0; i < pages; i++) {
+                    const btn = document.createElement('button');
+                    btn.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                    btn.setAttribute('aria-label', 'Página ' + (i + 1));
+                    btn.setAttribute('role', 'tab');
+                    btn.addEventListener('click', () => goTo(i * visible()));
+                    dotsWrap.appendChild(btn);
+                }
+            }
+
+            function updateDots() {
+                const dots = dotsWrap.querySelectorAll('.carousel-dot');
+                const page = Math.round(current / visible());
+                dots.forEach((d, i) => d.classList.toggle('active', i === page));
+            }
+
+            function goTo(index) {
+                const vis = visible();
+                const max = total - vis;
+                current = Math.max(0, Math.min(index, max));
+                const pct = (current / vis) * 100;
+                track.style.transform = 'translateX(-' + pct + '%)';
+                updateDots();
+            }
+
+            function goNext() {
+                const vis = visible();
+                goTo(current + vis >= total ? 0 : current + 1);
+            }
+
+            function goPrev() {
+                const vis = visible();
+                goTo(current <= 0 ? total - vis : current - 1);
+            }
+
+            function startAuto() {
+                clearInterval(timer);
+                timer = setInterval(goNext, 3500);
+            }
+
+            function init() {
+                const vis = visible();
+                slides.forEach(s => { s.style.minWidth = (100 / vis) + '%'; });
+                buildDots();
+                goTo(current);
+                startAuto();
+            }
+
+            prevBtn.addEventListener('click', () => { goPrev(); startAuto(); });
+            nextBtn.addEventListener('click', () => { goNext(); startAuto(); });
+
+            track.parentElement.addEventListener('mouseenter', () => clearInterval(timer));
+            track.parentElement.addEventListener('mouseleave', startAuto);
+
+            // Touch/swipe
+            let touchX = 0;
+            track.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+            track.addEventListener('touchend', e => {
+                const diff = touchX - e.changedTouches[0].clientX;
+                if (Math.abs(diff) > 40) { diff > 0 ? goNext() : goPrev(); startAuto(); }
+            }, { passive: true });
+
+            window.addEventListener('resize', init);
+            init();
+        })();
+
         // ── Menu toggle ──
         const menuToggle = document.getElementById('menuToggle');
         const navMenu    = document.getElementById('navMenu');
