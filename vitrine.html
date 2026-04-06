@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bamberê — Demonstração de Vitrine</title>
+    <meta name="description" content="Vitrine online da Bamberê — roupas e acessórios infantis de 0 a 10 anos.">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/favicon.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --primary:        #F47B20;
+            --primary-dark:   #D96A10;
+            --secondary:      #7B2D8B;
+            --secondary-dark: #621F72;
+            --dark:           #1E0A2D;
+            --header-h:       80px;
+            --badge-h:        63px;
+        }
+
+        /* Sem scroll na página — tudo calculado com position fixed */
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Nunito', sans-serif;
+            background: #f9f9f9;
+        }
+
+        /* ─────────────── HEADER ─────────────── */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            height: var(--header-h);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .logo img {
+            height: 62px;
+            width: auto;
+            display: block;
+        }
+
+        /* NAV DESKTOP */
+        .nav-desktop {
+            display: flex;
+            list-style: none;
+            gap: 1.75rem;
+            align-items: center;
+        }
+
+        .nav-desktop a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 700;
+            font-size: 0.95rem;
+            position: relative;
+            transition: color 0.2s;
+        }
+
+        .nav-desktop a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        .nav-desktop a:hover { color: var(--primary); }
+        .nav-desktop a:hover::after { width: 100%; }
+
+        .nav-cta {
+            background: var(--primary) !important;
+            color: white !important;
+            padding: 0.5rem 1.4rem;
+            border-radius: 100px;
+        }
+        .nav-cta::after { display: none !important; }
+        .nav-cta:hover { background: var(--primary-dark) !important; color: white !important; }
+
+        .nav-vitrine {
+            background: var(--secondary) !important;
+            color: white !important;
+            padding: 0.5rem 1.2rem;
+            border-radius: 100px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .nav-vitrine::after { display: none !important; }
+        .nav-vitrine:hover { background: var(--secondary-dark) !important; color: white !important; }
+
+        /* Estado ativo — vitrine destacada */
+        .nav-vitrine.nav-active {
+            box-shadow: 0 4px 16px rgba(123,45,139,0.4);
+        }
+
+        /* HAMBURGER */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 26px;
+            height: 3px;
+            background: var(--dark);
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+        .menu-toggle.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .menu-toggle.open span:nth-child(2) { opacity: 0; }
+        .menu-toggle.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* ─────────────── NAV MOBILE ─────────────── */
+        #navMenu {
+            position: fixed;
+            top: var(--header-h);
+            left: 0; right: 0;
+            background: white;
+            z-index: 999;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, box-shadow 0.3s;
+        }
+        #navMenu.open {
+            max-height: 420px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        #navMenu ul { list-style: none; padding: 1rem 1.5rem 1.5rem; }
+        #navMenu ul li a {
+            display: block;
+            padding: 0.8rem 0;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            transition: color 0.2s, padding-left 0.2s;
+        }
+        #navMenu ul li:last-child a { border-bottom: none; }
+        #navMenu ul li a:hover { color: var(--primary); padding-left: 0.5rem; }
+        #navMenu ul li a.mob-vitrine { color: var(--secondary); font-weight: 800; }
+
+        /* ─────────────── IFRAME ─────────────── */
+        .vitrine-wrap {
+            position: fixed;
+            top: var(--header-h);
+            left: 0;
+            right: 0;
+            bottom: var(--badge-h);
+            overflow: hidden;
+        }
+
+        .vitrine-wrap iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* ─────────────── BADGE MONTESITE ─────────────── */
+        #montesite-footer-badge {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: var(--badge-h);
+            z-index: 100;
+            background: #fff;
+        }
+
+        /* ─────────────── RESPONSIVIDADE ─────────────── */
+        @media (max-width: 1023px) {
+            .nav-desktop { display: none; }
+            .menu-toggle { display: flex; }
+            .logo img { height: 54px; }
+        }
+
+        @media (max-width: 767px) {
+            :root { --header-h: 64px; }
+            .logo img { height: 48px; }
+        }
+
+        @media (max-width: 359px) {
+            :root { --header-h: 58px; }
+            .logo img { height: 42px; }
+            .header-inner { padding: 0 0.875rem; }
+        }
+
+        /* Landscape mobile — badge menor */
+        @media (max-height: 500px) and (orientation: landscape) {
+            :root { --badge-h: 40px; }
+        }
+
+        /* Acessibilidade */
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ══════════════════════════════════════
+         HEADER
+    ══════════════════════════════════════ -->
+    <header id="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo" aria-label="Bamberê — voltar ao início">
+                <img src="images/logo.png" alt="Logo Bamberê">
+            </a>
+
+            <ul class="nav-desktop" role="list">
+                <li><a href="index.html#inicio">Início</a></li>
+                <li><a href="index.html#sobre">Sobre nós</a></li>
+                <li><a href="index.html#produtos">Produtos</a></li>
+                <li><a href="index.html#galeria">Galeria</a></li>
+                <li><a href="index.html#atendimento">Horários</a></li>
+                <li><a href="vitrine.html" class="nav-vitrine nav-active" aria-current="page">
+                    <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i> Vitrine
+                </a></li>
+                <li><a href="index.html#contato" class="nav-cta">Fale conosco</a></li>
+            </ul>
+
+            <button class="menu-toggle" id="menuToggle"
+                    aria-label="Abrir menu de navegação"
+                    aria-expanded="false"
+                    aria-controls="navMenu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- NAV MOBILE -->
+    <nav id="navMenu" role="navigation" aria-label="Menu mobile">
+        <ul>
+            <li><a href="index.html#inicio">Início</a></li>
+            <li><a href="index.html#sobre">Sobre nós</a></li>
+            <li><a href="index.html#produtos">Produtos</a></li>
+            <li><a href="index.html#galeria">Galeria</a></li>
+            <li><a href="index.html#atendimento">Horários</a></li>
+            <li><a href="vitrine.html" class="mob-vitrine">🛍️ Vitrine</a></li>
+            <li><a href="index.html#contato">Contato</a></li>
+        </ul>
+    </nav>
+
+    <!-- ══════════════════════════════════════
+         IFRAME — VITRINE
+    ══════════════════════════════════════ -->
+    <div class="vitrine-wrap" id="vitrineWrap">
+        <iframe
+            src="https://bambere.egestor.com.br/vitrine/"
+            title="Vitrine Bamberê — roupas e acessórios infantis"
+            allowfullscreen
+            loading="eager">
+        </iframe>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         BADGE MONTESITE
+    ══════════════════════════════════════ -->
+    <div id="montesite-footer-badge"></div>
+    <script src="https://vaabpicspdbolvutnscp.supabase.co/functions/v1/get-footer-iframe"></script>
+
+    <script>
+        // ── HAMBURGER MENU ──
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu    = document.getElementById('navMenu');
+
+        menuToggle.addEventListener('click', () => {
+            const isOpen = navMenu.classList.toggle('open');
+            menuToggle.classList.toggle('open', isOpen);
+            menuToggle.setAttribute('aria-expanded', isOpen);
+        });
+
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('open');
+                menuToggle.classList.remove('open');
+                menuToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+    </script>
+</body>
+</html>

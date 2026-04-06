@@ -153,6 +153,23 @@
             color: white !important;
         }
 
+        .nav-vitrine {
+            background: var(--secondary) !important;
+            color: white !important;
+            padding: 0.5rem 1.2rem;
+            border-radius: 100px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .nav-vitrine::after { display: none !important; }
+
+        .nav-vitrine:hover {
+            background: var(--secondary-dark) !important;
+            color: white !important;
+        }
+
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -442,6 +459,109 @@
             max-width: 600px;
             margin: 0 auto 3.5rem;
             line-height: 1.75;
+        }
+
+        /* ─────────────────────────────────────────
+           BANNER VITRINE (dentro de Produtos)
+        ───────────────────────────────────────── */
+        .vitrine-banner {
+            margin-top: 3rem;
+            border-radius: 24px;
+            background: linear-gradient(135deg, var(--secondary) 0%, #5A1A75 40%, var(--primary-dark) 75%, var(--primary) 100%);
+            padding: 3rem 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 48px rgba(123,45,139,0.28);
+        }
+
+        .vitrine-banner::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 280px; height: 280px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .vitrine-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -80px; left: -40px;
+            width: 240px; height: 240px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .vitrine-banner-text { position: relative; z-index: 1; }
+
+        .vitrine-banner-text .vb-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(255,255,255,0.18);
+            color: rgba(255,255,255,0.95);
+            font-size: 0.76rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 0.3rem 1rem;
+            border-radius: 100px;
+            margin-bottom: 1rem;
+        }
+
+        .vitrine-banner-text h3 {
+            font-family: 'Baloo 2', cursive;
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.65rem;
+            line-height: 1.2;
+        }
+
+        .vitrine-banner-text p {
+            color: rgba(255,255,255,0.82);
+            font-size: 1rem;
+            line-height: 1.65;
+            max-width: 480px;
+        }
+
+        .vitrine-banner-cta {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .btn-vitrine {
+            background: white;
+            color: var(--secondary);
+            border: 2px solid white;
+            font-size: 1rem;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .btn-vitrine:hover {
+            background: rgba(255,255,255,0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+        }
+
+        .vitrine-note {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
         }
 
         /* ─────────────────────────────────────────
@@ -1588,6 +1708,10 @@
 
         /* Mobile médio-grande (≤ 599px) */
         @media (max-width: 599px) {
+            .vitrine-banner { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
+            .vitrine-banner-text p { max-width: 100%; }
+            .vitrine-banner-cta { width: 100%; }
+            .btn-vitrine { width: 100%; justify-content: center; }
             .contato-cta-box    { padding: 2rem 1.5rem; }
             .carousel-slide img { height: 220px; }
             .prod-img           { height: 155px; }
@@ -1763,6 +1887,7 @@
                 <li><a href="#produtos">Produtos</a></li>
                 <li><a href="#galeria">Galeria</a></li>
                 <li><a href="#atendimento">Horários</a></li>
+                <li><a href="vitrine.html" class="nav-vitrine"><i class="fa-solid fa-bag-shopping" aria-hidden="true"></i> Vitrine</a></li>
                 <li><a href="#contato" class="nav-cta">Fale conosco</a></li>
             </ul>
             <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="navMenu">
@@ -1779,6 +1904,7 @@
             <li><a href="#produtos">Produtos</a></li>
             <li><a href="#galeria">Galeria</a></li>
             <li><a href="#atendimento">Horários</a></li>
+            <li><a href="vitrine.html">🛍️ Vitrine</a></li>
             <li><a href="#contato">Contato</a></li>
         </ul>
     </nav>
@@ -1805,8 +1931,11 @@
                 <a href="#produtos" class="btn btn-primary">
                     <i class="fa-solid fa-shirt" aria-hidden="true"></i> Ver coleção
                 </a>
+                <a href="vitrine.html" class="btn btn-secondary">
+                    <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i> Acessar vitrine
+                </a>
                 <a href="https://wa.me/5594991196942" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-whatsapp" aria-hidden="true"></i> Comprar pelo WhatsApp
+                    <i class="fab fa-whatsapp" aria-hidden="true"></i> WhatsApp
                 </a>
             </div>
         </div>
@@ -1961,6 +2090,21 @@
                 <a href="https://wa.me/5594991196942" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
                     <i class="fab fa-whatsapp" aria-hidden="true"></i> Ver catálogo completo no WhatsApp
                 </a>
+            </div>
+
+            <!-- BANNER VITRINE -->
+            <div class="vitrine-banner reveal">
+                <div class="vitrine-banner-text">
+                    <span class="vb-tag"><i class="fa-solid fa-bag-shopping"></i> Loja virtual</span>
+                    <h3>Explore a nossa vitrine online!</h3>
+                    <p>Veja todos os produtos disponíveis com preços, fotos e detalhes — direto no seu celular, sem precisar sair de casa. Compre com facilidade e praticidade!</p>
+                </div>
+                <div class="vitrine-banner-cta">
+                    <a href="vitrine.html" class="btn btn-vitrine">
+                        <i class="fa-solid fa-store" aria-hidden="true"></i> Entrar na vitrine
+                    </a>
+                    <span class="vitrine-note">✦ Disponível 24 horas por dia</span>
+                </div>
             </div>
         </div>
     </section>
